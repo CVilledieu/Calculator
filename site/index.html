@@ -1,12 +1,43 @@
+{{ block "index" . }}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 </head>
 <body>
-    {{ display . }}
+
+    {{ template "display" . }}
+    <hr />
+    {{ template "buttons" . }}
+
     
 </body>
 </html>
+{{ end }}
+
+{{ block "display" . }}
+<div id="display">
+    {{ .Value.Name }}
+</div>    
+{{ end }}
+
+{{ block "buttons" . }}
+<div hx-target="#display">
+    <div  >
+        <button hx-post="/update" name="numpad" value="5">5</button>
+        <button hx-post="/update" name="numpad" value="6">6</button>
+        <button hx-post="/update" name="numpad" value="7">7</button>
+    </div>
+    <div >
+        <button hx-post="/next" name="op" value="+">+</button>        
+    </div>
+    <div>
+        <button hx-get="/return">=</button>
+    </div>
+</div>    
+{{ end }}
