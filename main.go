@@ -11,9 +11,7 @@ func main() {
 	scanner.Split(bufio.ScanWords)
 	welcomeMessage()
 	var eq []string
-	for {
-		scanner.Scan()
-		//fmt.Printf("Current first input: %f, Current second input: %f \n", numInput[len((numInput))-2], numInput[len(numInput)-1])
+	for scanner.Scan() {
 
 		output := scanner.Text()
 		eq = append(eq, output)
