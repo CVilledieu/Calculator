@@ -18,7 +18,6 @@ func main() {
 		scanInput.Split(bufio.ScanWords)
 		for scanInput.Scan() {
 			eachPiece := scanInput.Text()
-			fmt.Println(eachPiece)
 			curQuestion = append(curQuestion, eachPiece)
 		}
 
