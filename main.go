@@ -4,32 +4,35 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Split(bufio.ScanWords)
 	welcomeMessage()
-	var eq []string
+	var calc Calculator
 	for scanner.Scan() {
-
-		output := scanner.Text()
-		eq = append(eq, output)
-		// num, err := strconv.ParseFloat(output, 64)
-		// if err != nil {
-		if len(output) > 1 {
-			if output == "quit" {
-				return
-			}
-			// if output == "clear" {
-			// 	numInput = [][]float64{0, 0}
-			// }
+		var curQuestion []string
+		input := scanner.Text()
+		scanInput := bufio.NewScanner(strings.NewReader(input))
+		scanInput.Split(bufio.ScanWords)
+		for scanInput.Scan() {
+			eachPiece := scanInput.Text()
+			fmt.Println(eachPiece)
+			curQuestion = append(curQuestion, eachPiece)
 		}
 
-		// }
-		// numInput = append(numInput, num)
+		if len(curQuestion) == 1 {
+			if curQuestion[0] == "quit" {
+				return
+			}
+			if curQuestion[0] == "history" {
+				fmt.Println(calc.History)
+				continue
+			}
+		}
 
-		fmt.Println(eq[:])
+		calc.UpdateHistory(curQuestion)
 	}
 }
 
@@ -42,4 +45,32 @@ func welcomeMessage() {
 func help() {
 	fmt.Println("supported operators: '+', '-', '*', or '/'")
 	fmt.Println("Alt commands: 'clear', 'history', or 'quit'")
+}
+
+type Calculator struct {
+	History   [][]string
+	CurrentEQ []string
+	FirstVal  float64
+	SecondVal float64
+	Operator  string
+}
+
+func (c *Calculator) UpdateHistory(currentQuestion []string) {
+	c.History = append(c.History, currentQuestion)
+}
+
+func (c *Calculator) Addition() float64 {
+	return c.FirstVal + c.SecondVal
+}
+
+func (c *Calculator) Subtraction() float64 {
+	return c.FirstVal - c.SecondVal
+}
+
+func (c *Calculator) Multiply() float64 {
+	return c.FirstVal * c.SecondVal
+}
+
+func (c *Calculator) Divid() float64 {
+	return c.FirstVal / c.SecondVal
 }
